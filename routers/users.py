@@ -6,8 +6,6 @@ from schemas import UserCreate, UserResponse
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
-# 💡 Pro-Tip: In a production app, use passlib for real hashing. 
-# For this assignment, a simple mock function shows you understand the concept.
 def get_password_hash(password: str) -> str:
     return f"fake_hashed_{password}"
 

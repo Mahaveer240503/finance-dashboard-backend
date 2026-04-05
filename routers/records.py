@@ -18,7 +18,7 @@ def create_record(record: RecordCreate, session: Session = Depends(get_session),
     # Unpack the schema data and inject the owner_id manually
     db_record = Record(
         **record.model_dump(), 
-        owner_id=current_user.id # 👈 Automatically tracked to the Admin who made it
+        owner_id=current_user.id 
     )
     
     session.add(db_record)
@@ -29,10 +29,10 @@ def create_record(record: RecordCreate, session: Session = Depends(get_session),
 # 🔒 Admins AND Analysts can view records (Viewers get blocked!)
 @router.get("/", response_model=list[RecordResponse])
 def get_all_records(
-    skip: int = 0,                                    # 👈 Pagination: Offset
-    limit: int = 100,                                 # 👈 Pagination: Max items
-    category: str | None = None,                      # 👈 Search Filter
-    type: TransactionType | None = None,              # 👈 Search Filter
+    skip: int = 0,                                    
+    limit: int = 100,                                
+    category: str | None = None,                     
+    type: TransactionType | None = None,             
     session: Session = Depends(get_session),
     current_user: User = Depends(require_analyst_or_admin)
 ):
@@ -40,24 +40,23 @@ def get_all_records(
     Get all active records with optional pagination and filtering.
     (Analyst/Admin Only)
     """
-    # 1. Start with the base query (only active records)
     query = select(Record).where(Record.is_deleted == False, Record.owner_id == current_user.id 
 )
 
-    # 2. Apply Search Filters dynamically if the user provided them
+    # Apply Search Filters dynamically if the user provided them
     if category:
         query = query.where(Record.category == category)
     if type:
         query = query.where(Record.type == type)
 
-    # 3. Apply Pagination (Offset and Limit)
+    # Apply Pagination (Offset and Limit)
     query = query.offset(skip).limit(limit)
 
-    # 4. Execute and return
+    # Execute and return
     records = session.exec(query).all()
     return records
 
-# 🔒 ONLY Admins can delete records
+# ONLY Admins can delete records
 @router.delete("/{record_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_record(
     record_id: int, 

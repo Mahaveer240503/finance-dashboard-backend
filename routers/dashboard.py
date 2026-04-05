@@ -37,9 +37,7 @@ def get_dashboard_summary(
     # 3. Calculate Net Balance
     net_balance = total_income - total_expenses
 
-    # ==========================================
-    # 🌟 NEW: CATEGORY-WISE TOTALS (Expenses Only)
-    # ==========================================
+
     category_query = select(Record.category, func.sum(Record.amount)).where(
         Record.type == TransactionType.expense,
         Record.is_deleted == False,
@@ -47,15 +45,13 @@ def get_dashboard_summary(
     ).group_by(Record.category)
     
     category_results = session.exec(category_query).all()
+    
     # Format the results into our Pydantic schema
     category_totals = [
         CategoryTotal(category=row[0], total=row[1] or Decimal("0.00")) 
         for row in category_results
     ]
 
-    # ==========================================
-    # 🌟 NEW: RECENT ACTIVITY (Last 5 records)
-    # ==========================================
     recent_query = select(Record).where(
         Record.is_deleted == False,
         Record.owner_id == current_user.id

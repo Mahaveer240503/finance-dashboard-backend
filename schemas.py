@@ -3,15 +3,12 @@ from datetime import datetime
 from decimal import Decimal
 from models import RoleEnum, TransactionType
 
-# ==========================
 # USER SCHEMAS
-# ==========================
-
 class UserCreate(BaseModel):
     """What the user sends us when registering."""
     name: str
     email: EmailStr  # Automatically validates a proper email format!
-    password: str    # Raw password (we will hash this in the route)
+    password: str   
     role: RoleEnum = RoleEnum.viewer
 
 class UserResponse(BaseModel):
@@ -28,10 +25,8 @@ class UserResponse(BaseModel):
     }
 
 
-# ==========================
-# RECORD SCHEMAS
-# ==========================
 
+# RECORD SCHEMAS
 class RecordCreate(BaseModel):
     """What the user sends to create a financial entry."""
     amount: Decimal
@@ -39,9 +34,6 @@ class RecordCreate(BaseModel):
     category: str
     date: datetime
     note: str | None = None
-    # 💡 Notice: We DO NOT include owner_id here. 
-    # The user shouldn't tell us who they are in the JSON body.
-    # We will securely extract their ID from their authentication token later!
 
 class RecordResponse(BaseModel):
     """What we send back when they request their records."""
@@ -67,8 +59,6 @@ class CategoryTotal(BaseModel):
     }
     
     
-    
-# Add this to the bottom of schemas.py
 class DashboardSummary(BaseModel):
     """What we send back for the dashboard analytics."""
     total_income: Decimal

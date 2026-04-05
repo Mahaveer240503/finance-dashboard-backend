@@ -3,11 +3,9 @@ from sqlmodel import Session
 from database import get_session
 from models import User, RoleEnum
 
-# ==========================================
 # 1. MOCK AUTHENTICATION
-# ==========================================
 def get_current_user(
-    # In a real app, this would be a JWT token. For this assignment, 
+    
     # we just pass the user ID in a custom header called "X-User-Id"
     x_user_id: int = Header(..., description="Mock Auth: Send your User ID here"), 
     session: Session = Depends(get_session)
@@ -27,9 +25,7 @@ def get_current_user(
         )
     return user
 
-# ==========================================
 # 2. ROLE-BASED ACCESS CONTROL (RBAC)
-# ==========================================
 def require_admin(current_user: User = Depends(get_current_user)) -> User:
     """Only allows Admins."""
     if current_user.role != RoleEnum.admin:
