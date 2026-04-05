@@ -51,29 +51,29 @@ finance_backend/
 
 ---
 
-## ⚙️ Setup Instructions
+## Setup Instructions
 
-### 1️⃣ Clone the repository
+### Clone the repository
 
 ```bash
 git clone <your-repo-url>
 cd finance_backend
 ```
 
-### 2️⃣ Create virtual environment
+### Create virtual environment
 
 ```bash
 python -m venv venv
 source venv/bin/activate   # Mac/Linux
 ```
 
-### 3️⃣ Install dependencies
+### Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4️⃣ Run the server
+### run the server
 
 ```bash
 uvicorn main:app --reload
@@ -85,7 +85,7 @@ uvicorn main:app --reload
 
 Once the server is running, open:
 
-👉 http://127.0.0.1:8000/docs
+http://127.0.0.1:8000/docs
 
 You can:
 
@@ -233,7 +233,7 @@ Record.owner_id == current_user.id
 ## Acknowledgment
 
 This project was built as part of an assignment.
-I used official documentation and AI tools (ChatGPT & Gemini) for guidance, but all code was written, tested, and understood by me.
+I used official documentation and online resources for guidance, but all code was written, tested, and understood by me.
 
 ---
 
